@@ -12,7 +12,7 @@
 #include "resource.h"
 #include "service.h"
 #include "systemsrv.h"
-#include "sinstance.h"
+// #include "sinstance.h"
 #include "tray.h"
 #include "utils.h"
 
@@ -25,7 +25,7 @@ static HICON m_hIconSm;
 static HANDLE m_hUpdateMainStatusThread;
 static HANDLE m_hMutex = NULL;
 static CNetworkAdapter *m_pAdapters = NULL;
-static CInstanceChecker m_InstanceChecker{ _T("{H84F50BD-59DF-43F4-A8F9-6C83EDB9CAE5}") };
+// static CInstanceChecker m_InstanceChecker{ _T("{H84F50BD-59DF-43F4-A8F9-6C83EDB9CAE5}") };
 
 
 static DWORD CALLBACK UpdateMainStatusThread(PVOID pvoid)
@@ -624,13 +624,13 @@ VOID HandleCommandEvent(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 }
 
-INT_PTR CALLBACK MainDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+INT_PTR CALLBACK VPNDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
 	case WM_INITDIALOG:
 		{
-            m_InstanceChecker.TrackFirstInstanceRunning(hwndDlg);
+//             m_InstanceChecker.TrackFirstInstanceRunning(hwndDlg);
 
 			SetupSystemMenu(hwndDlg);
 			LOGFONT lfont;
@@ -687,7 +687,7 @@ INT_PTR CALLBACK MainDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
 	case WM_SIZE:
 		{
 			if (wParam == SIZE_MINIMIZED && IsSetAutoTray()) {
-				HideToTray(hwndDlg);
+				//HideToTray(hwndDlg);
 				ShowWindow(hwndDlg, SW_HIDE);
 				break;
 			}
@@ -725,8 +725,8 @@ INT_PTR CALLBACK MainDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM l
 			CloseHandle(m_hMutex);
 			CloseHandle(m_hUpdateMainStatusThread);
 
-			DestroyTray(hwndDlg);
-			PostQuitMessage(0);
+			//DestroyTray(hwndDlg);
+			//PostQuitMessage(0);
 			break;
 		}
 
@@ -840,6 +840,7 @@ INT_PTR CALLBACK AdSettingsDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LP
 }
 
 
+/*
 INT WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	// Initialize
@@ -857,7 +858,11 @@ INT WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
         return FALSE;
     }
     // Run GUI window
-	INT_PTR res = DialogBox(hInstance, MAKEINTRESOURCE(IDD_MAIN), NULL, MainDialogProc);
+	static int lpAddress = 0;
+	HMODULE hMod = 0;
+	::GetModuleHandleEx( GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCWSTR)&lpAddress, &hMod );
+	INT_PTR res = DialogBox(HINSTANCE, MAKEINTRESOURCE(IDD_MAIN), NULL, MainDialogProc);
 
 	return 0;
 }
+*/
