@@ -131,7 +131,7 @@ VOID GetMacAddress(WCHAR* pszMacAddress, WCHAR* pszGuid)
 			sCurrAddr = sAddresses;
 			CHAR* pszGuidAnsi = NULL;
 			pszGuidAnsi = new CHAR[wcslen(pszGuid) + 1];
-			UINT nConv = 0;
+			UINT_PTR nConv = 0;
 			wcstombs_s(&nConv, pszGuidAnsi, wcslen(pszGuid) + 1, pszGuid, _TRUNCATE);
 			while (sCurrAddr != NULL)
 			{

@@ -270,8 +270,8 @@ DWORD GetSystemServiceStatusByNssm(VOID)
     CloseHandle(hRead);
     
     //Convert char* string to a wchar_t* string.
-    UINT nConvertedChars = 0;
-    UINT nNewsize = strlen(arrcStdoutBuf) + 1;
+    UINT_PTR nConvertedChars = 0;
+    UINT_PTR nNewsize = strlen(arrcStdoutBuf) + 1;
     static WCHAR arrcReadBuf[PROCESS_STDOUT_BUFSIZE] = { 0 };
     SecureZeroMemory(arrcReadBuf, PROCESS_STDOUT_BUFSIZE);
     mbstowcs_s(&nConvertedChars, arrcReadBuf, nNewsize, arrcStdoutBuf, _TRUNCATE);
@@ -335,7 +335,7 @@ VOID GetSystemServiceOutput(WCHAR *szReadBuf)
     dwOffset = dwEndOffset;
 
     //Convert char* string to a wchar_t* string.
-    UINT convertedChars = 0;
+    UINT_PTR convertedChars = 0;
     mbstowcs_s(&convertedChars, szReadBuf, nReadBufSize, chbuf, _TRUNCATE);
     //Display the result and indicate the type of string that it is.
     LogEvent(TEXT("%s\n"), szReadBuf);

@@ -39,7 +39,7 @@ static INT SendStopSig(UINT nEdgeManagerPort)
 	sockServerAddr.sin_port = htons(nEdgeManagerPort);
 	CHAR szSendBuf[8] = "stop";
 	INT nLen = sizeof(SOCKADDR);
-	sendto(sockClient, szSendBuf, strlen(szSendBuf), 0, (SOCKADDR*)&sockServerAddr, nLen);
+	sendto(sockClient, szSendBuf, (int)strlen(szSendBuf), 0, (SOCKADDR*)&sockServerAddr, nLen);
 	closesocket(sockClient) ;
 	WSACleanup();
 	return 0;
@@ -198,8 +198,8 @@ void GetProcessServiceOutput(WCHAR *pszReadBuf)
         return;
     }
 	//Convert char* string to a wchar_t* string.
-	UINT convertedChars = 0;
-	UINT newsize = strlen(chbuf) + 1;
+	UINT_PTR convertedChars = 0;
+	UINT_PTR newsize = strlen(chbuf) + 1;
     if (newsize > PROCESS_STDOUT_BUFSIZE) {
         newsize = PROCESS_STDOUT_BUFSIZE;
     }

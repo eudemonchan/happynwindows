@@ -12,7 +12,9 @@
 #include "resource.h"
 #include "service.h"
 #include "systemsrv.h"
-// #include "sinstance.h"
+#ifdef ISOLATED_EXE
+#include "sinstance.h"
+#endif // ISOLATED_EXE
 #include "tray.h"
 #include "utils.h"
 
@@ -25,7 +27,9 @@ static HICON m_hIconSm;
 static HANDLE m_hUpdateMainStatusThread;
 static HANDLE m_hMutex = NULL;
 static CNetworkAdapter *m_pAdapters = NULL;
-// static CInstanceChecker m_InstanceChecker{ _T("{H84F50BD-59DF-43F4-A8F9-6C83EDB9CAE5}") };
+#ifdef ISOLATED_EXE
+static CInstanceChecker m_InstanceChecker{ _T("{H84F50BD-59DF-43F4-A8F9-6C83EDB9CAE5}") };
+#endif // ISOLATED_EXE
 
 
 static DWORD CALLBACK UpdateMainStatusThread(PVOID pvoid)
@@ -137,7 +141,7 @@ static BOOL ValidateAdOptions(HWND hwndDlg)
 
 static VOID ReadAdOptions(HWND hwndDlg)
 {
-    WCHAR arrcTmpAdOptionBuf[MAX_COMMAND_LINE_LEN];
+    WCHAR arrcTmpAdOptionBuf[MAX_COMMAND_LINE_LEN] = L"";
     DWORD dwBufLen = MAX_COMMAND_LINE_LEN;
     DWORD dwBuf;
     HKEY hkey;
@@ -456,7 +460,7 @@ VOID UpdateServiceStatus(HWND hwndDlg)
 
 VOID  ReadOptions(HWND hwndDlg)
 {
-	WCHAR tmp_buf[MAX_COMMAND_LINE_LEN];
+	WCHAR tmp_buf[MAX_COMMAND_LINE_LEN] = L"";
 	DWORD buf_len = MAX_COMMAND_LINE_LEN;
 	DWORD dword_buf;
 	HKEY hkey;
@@ -624,7 +628,11 @@ VOID HandleCommandEvent(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 }
 
+#ifdef ISOLATED_EXE
+INT_PTR CALLBACK MainDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+#else
 INT_PTR CALLBACK VPNDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+#endif // ISOLATED_EXE
 {
 	switch (uMsg)
 	{
@@ -840,7 +848,8 @@ INT_PTR CALLBACK AdSettingsDialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LP
 }
 
 
-/*
+
+#ifdef ISOLATED_EXE
 INT WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	// Initialize
@@ -861,8 +870,9 @@ INT WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	static int lpAddress = 0;
 	HMODULE hMod = 0;
 	::GetModuleHandleEx( GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCWSTR)&lpAddress, &hMod );
-	INT_PTR res = DialogBox(HINSTANCE, MAKEINTRESOURCE(IDD_MAIN), NULL, MainDialogProc);
+	INT_PTR res = DialogBox(hInstance, MAKEINTRESOURCE(IDD_MAIN), NULL, MainDialogProc);
 
 	return 0;
 }
-*/
+#endif // ISOLATED_EXE
+

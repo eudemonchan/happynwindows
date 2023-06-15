@@ -5,6 +5,7 @@
 #include <iphlpapi.h>
 #include <ipifcons.h>
 #include <vector>
+#include <xstring>
 
 using namespace std;
 
