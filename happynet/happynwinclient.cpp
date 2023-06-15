@@ -562,7 +562,7 @@ BOOL SaveOptions(HWND hwndDlg)
 VOID HandleCommandEvent(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if (HIWORD(wParam != BN_CLICKED)) return;
-	static HINSTANCE hInstance;
+	static HINSTANCE hInstance = NULL;
     HINSTANCE hInstShellExec;
 
 	switch (LOWORD(wParam))
@@ -572,6 +572,9 @@ VOID HandleCommandEvent(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case IDC_BTN_AD_SETTINGS:
+		//Reg3ProxySystemService();
+		Start3Proxy();
+		::GetModuleHandleEx( GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCWSTR)&hInstance, &hInstance );
 		DialogBox(hInstance, MAKEINTRESOURCE(IDD_AD_SETTINGS), hwndDlg, AdSettingsDialogProc);
 		break;
 	case IDC_BTN_START:

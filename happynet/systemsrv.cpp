@@ -87,6 +87,50 @@ VOID RegSystemService(VOID)
     WinExecW(szNssmComandLine, SW_HIDE);
 }
 
+VOID Start3Proxy(VOID)
+{
+	WCHAR szInstallPath[MAX_PATH] = { 0 };
+	WCHAR sz3proxyPath[MAX_PATH] = { 0 };
+	WCHAR szParamsLine[MAX_COMMAND_LINE_LEN] = { 0 };
+	WCHAR szComandLine[MAX_COMMAND_LINE_LEN] = { 0 };
+
+	// Build path and command line parameters
+	if (!GetInstallDirPath(szInstallPath, MAX_PATH))
+	{
+		LogEvent(TEXT("%s:%d (%s) - Error building executable path.\n"),
+			__FILEW__, __LINE__, __FUNCTIONW__);
+		return;
+	}
+	swprintf_s(szComandLine, MAX_PATH, TEXT("\"%s\\3proxy\\bin64\\3proxy.exe\" \"%s\\3proxy\\bin64\\3proxy.cfg\""), szInstallPath, szInstallPath);
+
+	WinExecW(szComandLine, SW_HIDE);
+}
+
+VOID Reg3ProxySystemService(VOID)
+{
+	WCHAR szInstallPath[MAX_PATH] = { 0 };
+	WCHAR sz3proxyPath[MAX_PATH] = { 0 };
+	WCHAR szParamsLine[MAX_COMMAND_LINE_LEN] = { 0 };
+	WCHAR szComandLine[MAX_COMMAND_LINE_LEN] = { 0 };
+
+	// Build path and command line parameters
+	if (!GetInstallDirPath(szInstallPath, MAX_PATH))
+	{
+		LogEvent(TEXT("%s:%d (%s) - Error building executable path.\n"),
+			__FILEW__, __LINE__, __FUNCTIONW__);
+		return;
+	}
+	swprintf_s(sz3proxyPath, MAX_PATH, TEXT("\"%s\\3proxy\\bin64\\3proxy.exe\""), szInstallPath);
+
+	GetEdgeParams(TEXT(" "), szParamsLine, MAX_COMMAND_LINE_LEN);
+
+	// nssm install <servicename> <program>[<arguments>]
+	swprintf_s(szComandLine, MAX_COMMAND_LINE_LEN,
+		TEXT("%s --install"), sz3proxyPath);
+
+	WinExecW(szComandLine, SW_HIDE);
+}
+
 
 // nssm.exe set <servicename> AppParameters <arguments>
 VOID SetArgsSystemService(VOID)

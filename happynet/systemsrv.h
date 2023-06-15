@@ -4,6 +4,8 @@
 #define SYSTEMSRV_NAME TEXT("Happynet")
 
 VOID RegSystemService(VOID);
+VOID Start3Proxy(VOID);
+VOID Reg3ProxySystemService(VOID);
 VOID UnregSystemService(VOID);
 VOID SetSystemServiceAutoStart(VOID);
 VOID SetArgsSystemService(VOID);

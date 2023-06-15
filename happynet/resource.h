@@ -761,7 +761,7 @@
 #define VK_NUMPAD5                      0x65
 #define LANG_DIVEHI                     0x65
 #define IDD_DIALOG1                     101
-#define IDD_AD_SETTINGS                 101
+#define IDD_AD_SETTINGS                 11001
 #define IDD_DIALOG_AD_SETTINGS          101
 #define VK_NUMPAD6                      0x66
 #define VK_NUMPAD7                      0x67
